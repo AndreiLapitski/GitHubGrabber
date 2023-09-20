@@ -24,8 +24,8 @@
             ConsoleWriter.WriteLines(repositoryNames);
 
             ConsoleWriter.WriteLine("Processing...", NewLineIn.Start);
-            var accessToken = SettingsHelper.Get(SettingKey.AccessToken);
-            var ownerName = SettingsHelper.Get(SettingKey.OwnerName);
+            var accessToken = SettingsHelper.Get(SettingKey.GitHubAccessToken);
+            var ownerName = SettingsHelper.Get(SettingKey.RepositoryOwnerName);
             var gitHubHelper = new GitHubHelper(accessToken, ownerName);
             var repositories =
                 await gitHubHelper.GetRepositoriesAsync(

@@ -2,8 +2,8 @@
 {
     public enum SettingKey
     {
-        AccessToken,
-        OwnerName,
+        GitHubAccessToken,
+        RepositoryOwnerName,
         ChunkSize,
         OutputFileName,
         GitHubApiBaseUrl,
