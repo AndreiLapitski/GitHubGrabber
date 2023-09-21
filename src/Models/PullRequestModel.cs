@@ -18,6 +18,21 @@
             Description = description;
         }
 
+        public IEnumerable<Uri> GetAllUniqueJiraLinks()
+        {
+            var linksToTickets = new List<Uri>();
+            var linksFromDescription = GetJiraTicketNumbersFromDescription().ToList();
+            var linkFromTitle = GetJiraTicketNumberLinkFromTitle();
+            if (linkFromTitle != null && !linksFromDescription.Contains(linkFromTitle))
+            {
+                linksFromDescription.Add(linkFromTitle);
+            }
+
+            linksToTickets.AddRange(linksFromDescription);
+
+            return linksToTickets.Distinct();
+        }
+
         public string? GetJiraTicketNumberFromTitle()
         {
             var linkFromTitleRegex = new Regex(OutputWorksheetConstants.LinkFromTitleRegex);

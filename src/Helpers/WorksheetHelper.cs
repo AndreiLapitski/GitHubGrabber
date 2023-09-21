@@ -20,7 +20,7 @@
                 var row = 2;
                 foreach (var pullRequest in repository.PullRequests)
                 {
-                    var jiraTicketLinks = pullRequest.GetJiraTicketNumbersFromDescription().ToList();
+                    var jiraTicketLinks = pullRequest.GetAllUniqueJiraLinks().ToList();
                     var linksCount = jiraTicketLinks.Count;
                     switch (linksCount)
                     {

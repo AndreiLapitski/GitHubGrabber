@@ -51,7 +51,7 @@
         public async Task<List<PullRequestDto>> GetPullRequestsAsync(
             string repositoryName,
             uint perPage,
-            PullRequestStatus state)
+            PullRequestStatus status)
         {
             if (string.IsNullOrEmpty(repositoryName))
             {
@@ -68,7 +68,7 @@
             var gitHubApiHttpClient = new GitHubApiClient(_accessToken);
             while (true)
             {
-                var requestUri = gitHubApiHttpClient.BuildGetPullRequestsUri(_ownerName, repositoryName, pageNumber, perPage, state);
+                var requestUri = gitHubApiHttpClient.BuildGetPullRequestsUri(_ownerName, repositoryName, pageNumber, perPage, status);
                 var response = await gitHubApiHttpClient.GetAsync(requestUri);
                 var content = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
