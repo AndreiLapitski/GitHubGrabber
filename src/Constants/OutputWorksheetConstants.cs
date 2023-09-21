@@ -18,7 +18,7 @@
 
         public const string ValueNotAvailable = "N/A";
 
-        public const string LinkFromTitleRegex = @"(?<=^|\s)[A-Za-z]+[-]\d+(?=\s+|$)";
+        public const string LinkFromTitleRegex = @"(?<=^|\s)[A-Za-z\d]+[-]\d+(?=[\s:]|$)";
         public const string LinksFromDescriptionRegex = "https:\\/\\/{0}\\.atlassian\\.net\\/browse\\/\\w+-\\d+";
     }
 }
