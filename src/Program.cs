@@ -26,12 +26,13 @@
             ConsoleWriter.WriteLine("Processing...", NewLineIn.Start);
             var accessToken = SettingsHelper.Get(SettingKey.GitHubAccessToken);
             var ownerName = SettingsHelper.Get(SettingKey.RepositoryOwnerName);
+            var pullRequestStatus = SettingsHelper.GetPullRequestStatus();
             var gitHubHelper = new GitHubHelper(accessToken, ownerName);
             var repositories =
                 await gitHubHelper.GetRepositoriesAsync(
                     repositoryNames,
                     100,
-                    PullRequestStatus.All);
+                    pullRequestStatus);
 
             var outputFileName = SettingsHelper.Get(SettingKey.OutputFileName);
             var outputFileHelper = new OutputFileHelper(outputFileName);
@@ -42,6 +43,8 @@
 
             timer.Stop();
             ConsoleWriter.WriteLine($"Time: {timer.Elapsed:m\\:ss\\.fffff}");
+            Console.WriteLine("Press any key to close the program");
+            Console.ReadKey();
         }
     }
 }

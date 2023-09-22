@@ -8,6 +8,7 @@
         OutputFileName,
         GitHubApiBaseUrl,
         JiraTeamBaseUrl,
-        TicketNamePartsForExclude
+        TicketNamePartsForExclude,
+        PullRequestStatus
     }
 }

@@ -9,6 +9,8 @@
             {
                 Get(settingKey);
             }
+
+            GetPullRequestStatus();
         }
 
         public static string Get(SettingKey key)
@@ -30,7 +32,24 @@
 
         public static string[] GetTicketNamePartsForExclude()
         {
-            return Get(SettingKey.TicketNamePartsForExclude).Split(Separator.Comma);
+            return Get(SettingKey.TicketNamePartsForExclude)
+                .Split(Separator.Comma)
+                .Select(str => str.ToLowerInvariant())
+                .ToArray();
+        }
+
+        public static PullRequestStatus GetPullRequestStatus()
+        {
+            var status = Get(SettingKey.PullRequestStatus);
+            Enum.TryParse(typeof(PullRequestStatus), status, true, out var result);
+            if (result == null)
+            {
+                throw new ConfigurationException($"Invalid {SettingKey.PullRequestStatus}. " +
+                                                 "Please, enter one of acceptable values into App.config. " +
+                                                 "Acceptable values: All, Open, Closed");
+            }
+
+            return (PullRequestStatus)result;
         }
     }
 }

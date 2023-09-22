@@ -11,9 +11,18 @@
             foreach (Match match in matches)
             {
                 var matchString = match.Value;
-                var isForbiddenString = forbiddenStrings.Any(forbiddenString =>
-                    matchString.Contains($"{forbiddenString}{toChar}"));
-                if (!isForbiddenString)
+                var isValidString = true;
+                foreach (var forbiddenString in forbiddenStrings)
+                {
+                    var matchStringFirstSplitPart = matchString.Split(toChar).First();
+                    if (matchStringFirstSplitPart.Equals(forbiddenString, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        isValidString = false;
+                        break;
+                    }
+                }
+
+                if (isValidString)
                 {
                     validStrings.Add(matchString);
                 }
