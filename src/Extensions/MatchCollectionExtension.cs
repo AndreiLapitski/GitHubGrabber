@@ -2,20 +2,24 @@
 {
     public static class MatchCollectionExtension
     {
-        public static List<string> Filter(this MatchCollection matches, string[] forbiddenStrings)
+        public static List<string> Filter(
+            this MatchCollection matches,
+            string[] forbiddenStrings,
+            char toChar)
         {
-            var filteredStrings = new List<string>();
+            var validStrings = new List<string>();
             foreach (Match match in matches)
             {
                 var matchString = match.Value;
-                var isForbiddenString = forbiddenStrings.Any(forbiddenString => matchString.Contains(forbiddenString));
+                var isForbiddenString = forbiddenStrings.Any(forbiddenString =>
+                    matchString.Contains($"{forbiddenString}{toChar}"));
                 if (!isForbiddenString)
                 {
-                    filteredStrings.Add(matchString);
+                    validStrings.Add(matchString);
                 }
             }
 
-            return filteredStrings;
+            return validStrings;
         }
     }
 }

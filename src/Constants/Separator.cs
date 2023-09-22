@@ -4,5 +4,6 @@
     {
         public const char Dot = '.';
         public const char Comma = ',';
+        public const char Dash = '-';
     }
 }

@@ -19,7 +19,7 @@
             var regex = new Regex(pattern);
 
             // Act
-            var resultStrings = regex.Matches(str).Filter(forbiddenStrings);
+            var resultStrings = regex.Matches(str).Filter(forbiddenStrings, Separator.Dash);
 
             // Assert
             Assert.That(resultStrings, Is.EqualTo(expectedStrings));

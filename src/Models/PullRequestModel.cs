@@ -33,7 +33,9 @@
         {
             var linkFromTitleRegex = new Regex(OutputWorksheetConstants.LinkFromTitleRegex);
             var forbiddenStrings = SettingsHelper.GetTicketNamePartsForExclude();
-            var filteredTicketNames = linkFromTitleRegex.Matches(Title).Filter(forbiddenStrings);
+            var filteredTicketNames = linkFromTitleRegex
+                    .Matches(Title)
+                    .Filter(forbiddenStrings, Separator.Dash);
 
             return filteredTicketNames;
         }
@@ -65,7 +67,7 @@
                 SettingsHelper.GetJiraTeamName());
             var linksFromDescriptionRegex = new Regex(pattern);
             var linksAsStrings = linksFromDescriptionRegex.Matches(Description)
-                .Filter(forbiddenStrings)
+                .Filter(forbiddenStrings, Separator.Dash)
                 .Distinct()
                 .ToList();
 
