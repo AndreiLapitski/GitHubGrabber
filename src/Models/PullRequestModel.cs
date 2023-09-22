@@ -20,35 +20,39 @@
 
         public IEnumerable<Uri> GetAllUniqueJiraLinks()
         {
+            var linksFromTitle = GetJiraTicketNumberLinksFromTitle();
+            var linksFromDescription = GetJiraTicketNumberLinksFromDescription();
+            var unitedLinks = linksFromDescription.Union(linksFromTitle);
             var linksToTickets = new List<Uri>();
-            var linksFromDescription = GetJiraTicketNumbersFromDescription().ToList();
-            var linkFromTitle = GetJiraTicketNumberLinkFromTitle();
-            if (linkFromTitle != null && !linksFromDescription.Contains(linkFromTitle))
-            {
-                linksFromDescription.Add(linkFromTitle);
-            }
-
-            linksToTickets.AddRange(linksFromDescription);
+            linksToTickets.AddRange(unitedLinks);
 
             return linksToTickets.Distinct();
         }
 
-        public string? GetJiraTicketNumberFromTitle()
+        public List<string> GetJiraTicketNumbersFromTitle()
         {
             var linkFromTitleRegex = new Regex(OutputWorksheetConstants.LinkFromTitleRegex);
-            var match = linkFromTitleRegex.Matches(Title).FirstOrDefault();
-            return match?.Value;
+            var matches = linkFromTitleRegex.Matches(Title);
+            var ticketNumbers = matches.Select(match => match.Value).ToList();
+
+            return ticketNumbers;
         }
 
-        public Uri? GetJiraTicketNumberLinkFromTitle()
+        public List<Uri> GetJiraTicketNumberLinksFromTitle()
         {
-            var ticketNumber = GetJiraTicketNumberFromTitle();
-            return string.IsNullOrEmpty(ticketNumber)
-                ? null
-                : $"{SettingsHelper.Get(SettingKey.JiraTeamBaseUrl)}/browse/{ticketNumber}".ToUri();
+            var ticketNumbers = GetJiraTicketNumbersFromTitle();
+            if (!ticketNumbers.Any())
+            {
+                return new List<Uri>();
+            }
+
+            var jiraLinks = ticketNumbers.Select(ticketNumber =>
+                $"{SettingsHelper.Get(SettingKey.JiraTeamBaseUrl)}/browse/{ticketNumber}".ToUri());
+
+            return jiraLinks.ToList();
         }
 
-        public IEnumerable<Uri> GetJiraTicketNumbersFromDescription()
+        public List<Uri> GetJiraTicketNumberLinksFromDescription()
         {
             if (string.IsNullOrEmpty(Description))
             {
@@ -64,7 +68,7 @@
                 .Distinct()
                 .ToList();
 
-            return CollectionHelper.ConvertToUrls(linksAsStrings);
+            return CollectionHelper.ConvertToUrls(linksAsStrings).ToList();
         }
     }
 }

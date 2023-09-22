@@ -19,14 +19,10 @@
             var linksToTickets = new List<Uri>();
             foreach (var pullRequest in PullRequests)
             {
-                var linksFromDescription = pullRequest.GetJiraTicketNumbersFromDescription().ToList();
-                var linkFromTitle = pullRequest.GetJiraTicketNumberLinkFromTitle();
-                if (linkFromTitle != null && !linksFromDescription.Contains(linkFromTitle))
-                {
-                    linksFromDescription.Add(linkFromTitle);
-                }
-
-                linksToTickets.AddRange(linksFromDescription);
+                var linksFromTitle = pullRequest.GetJiraTicketNumberLinksFromTitle();
+                var linksFromDescription = pullRequest.GetJiraTicketNumberLinksFromDescription();
+                var unitedLinks = linksFromDescription.Union(linksFromTitle);
+                linksToTickets.AddRange(unitedLinks);
             }
 
             return linksToTickets.Distinct();
