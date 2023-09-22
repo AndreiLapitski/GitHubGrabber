@@ -27,5 +27,10 @@
             var jiraTeamBaseUrl = Get(SettingKey.JiraTeamBaseUrl);
             return jiraTeamBaseUrl.ToUri().Host.Split(Separator.Dot).First();
         }
+
+        public static string[] GetTicketNamePartsForExclude()
+        {
+            return Get(SettingKey.TicketNamePartsForExclude).Split(Separator.Comma);
+        }
     }
 }

@@ -32,10 +32,10 @@
         public List<string> GetJiraTicketNumbersFromTitle()
         {
             var linkFromTitleRegex = new Regex(OutputWorksheetConstants.LinkFromTitleRegex);
-            var matches = linkFromTitleRegex.Matches(Title);
-            var ticketNumbers = matches.Select(match => match.Value).ToList();
+            var forbiddenStrings = SettingsHelper.GetTicketNamePartsForExclude();
+            var filteredTicketNames = linkFromTitleRegex.Matches(Title).Filter(forbiddenStrings);
 
-            return ticketNumbers;
+            return filteredTicketNames;
         }
 
         public List<Uri> GetJiraTicketNumberLinksFromTitle()
@@ -59,12 +59,13 @@
                 return new List<Uri>();
             }
 
+            var forbiddenStrings = SettingsHelper.GetTicketNamePartsForExclude();
             var pattern = string.Format(
                 OutputWorksheetConstants.LinksFromDescriptionRegex,
                 SettingsHelper.GetJiraTeamName());
             var linksFromDescriptionRegex = new Regex(pattern);
             var linksAsStrings = linksFromDescriptionRegex.Matches(Description)
-                .Select(match => match.Value)
+                .Filter(forbiddenStrings)
                 .Distinct()
                 .ToList();
 

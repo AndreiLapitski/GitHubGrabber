@@ -7,6 +7,7 @@
         ChunkSize,
         OutputFileName,
         GitHubApiBaseUrl,
-        JiraTeamBaseUrl
+        JiraTeamBaseUrl,
+        TicketNamePartsForExclude
     }
 }
